@@ -1,50 +1,83 @@
-# React + TypeScript + Vite
+# 💬 InnovaChat AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+InnovaChat AI is a modern AI-powered chat application that integrates Google's Gemini API to generate intelligent responses. It features user authentication, chat history storage via Supabase, and a sleek responsive UI powered by React.
 
-Currently, two official plugins are available:
+[🌐 Live Demo](https://innovachat.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- ✅ Chat with Gemini 1.5 Flash API (Google AI)
+- 🔐 Authentication using Supabase
+- 💾 Chat history stored securely in Supabase DB
+- 🌓 Light / Dark theme switch
+- 🖼️ AI-generated image detection in chat
+- 🧹 Clear chat history feature
+- ⚡ Fast and responsive user interface
+- 🛠️ Built with Vite + ReactJS
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🧪 Tech Stack
+
+| Frontend | Backend / Auth / DB | AI Integration |
+|----------|----------------------|----------------|
+| React.js, TailwindCSS | Supabase (Auth + DB) | Gemini 1.5 Flash API |
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/kunalvvs/InnovaChatAI.git
+cd InnovaChatAI/InnovaChatAI
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Install Dependencies
 ```
+npm install
+```
+4. Add Environment Variables
+Create a .env file in the root directory:
+
+
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
+```
+4. Run the Development Server
+
+```
+npm run dev
+```
+📁 Project Structure
+
+```
+InnovaChatAI/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── utils/
+│   └── main.jsx
+├── .env
+├── index.html
+├── vite.config.js
+└── README.md
+```
+📸 Screenshots
+
+![image](https://github.com/user-attachments/assets/0c212be6-d688-48e2-8888-6d24924ad5cd)
+
+
+📃 License
+This project is licensed under the MIT License.
+
+🔗 Links
+🌐 Live Site: https://innovachat.vercel.app
+
+📦 Repo: InnovaChatAI
