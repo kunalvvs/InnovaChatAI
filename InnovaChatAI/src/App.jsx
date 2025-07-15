@@ -5,6 +5,7 @@ import { ChatInput } from './components/ChatInput';
 import { ChatHistory as ChatHistoryComponent } from './components/ChatHistory';
 import AIToolsPanel from './components/AIToolsPanel';
 import PromptOptimizer from './components/PromptOptimizer';
+import AIBackground from './components/AIBackground';
 import { BrainCircuit, Terminal, Shield, Sun, Moon, Menu, LogIn, User, Sparkles, Wand2 } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthContext';
@@ -393,13 +394,16 @@ function App() {
   };
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen ${
+    <div className={`relative flex flex-col md:flex-row h-screen ${
       isDark ? 'bg-[#0a0c10]' : 'bg-gray-50'
     }`}>
+      {/* AI Background Animation */}
+      <AIBackground />
+      
       {/* Mobile Header */}
-      <div className={`md:hidden flex h-14 items-center px-4 border-b ${
-        isDark ? 'bg-[#0a0c10] border-[#00ff9520]' : 'bg-emerald-50 border-emerald-100'
-      }`}>
+      <div className={`relative md:hidden flex h-14 items-center px-4 border-b ${
+        isDark ? 'bg-[#0a0c10]/80 backdrop-blur-sm border-[#00ff9520]' : 'bg-emerald-50/80 backdrop-blur-sm border-emerald-100'
+      }`} style={{ zIndex: 10 }}>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className={`sidebar-toggle p-2 rounded-lg ${
@@ -491,10 +495,10 @@ function App() {
       <div className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0 sidebar fixed md:relative z-50 w-[280px] md:w-[260px] h-[calc(100vh-3.5rem)] md:h-screen ${
-        isDark ? 'bg-[#0f1318] border-[#00ff9520]' : 'bg-white border-emerald-100'
+        isDark ? 'bg-[#0f1318]/90 backdrop-blur-sm border-[#00ff9520]' : 'bg-white/90 backdrop-blur-sm border-emerald-100'
       } md:border-r transition-transform duration-300 ease-in-out`}>
         <div className={`hidden md:flex h-14 items-center px-4 border-b ${
-          isDark ? 'bg-[#0a0c10] border-[#00ff9520]' : 'bg-emerald-50 border-emerald-100'
+          isDark ? 'bg-[#0a0c10]/80 backdrop-blur-sm border-[#00ff9520]' : 'bg-emerald-50/80 backdrop-blur-sm border-emerald-100'
         }`}>
           <Terminal className={isDark ? 'w-6 h-6 text-[#00ff95]' : 'w-6 h-6 text-emerald-600'} />
           <span className={`ml-2 font-mono font-semibold ${
@@ -555,7 +559,7 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-[calc(100vh-3.5rem)] md:h-screen">
+      <div className="relative flex-1 flex flex-col h-[calc(100vh-3.5rem)] md:h-screen" style={{ zIndex: 5 }}>
         {/* Messages Container */}
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
           <div className="max-w-3xl mx-auto px-4 md:px-6">
@@ -571,10 +575,10 @@ function App() {
                 </div>
                 <h2 className={`text-xl md:text-2xl font-mono font-semibold mb-2 ${
                   isDark ? 'text-[#00ff95]' : 'text-emerald-600'
-                } mt-4`}>
+                } mt-4 drop-shadow-lg`}>
                   {user ? 'Secure AI Terminal' : 'Welcome to InnovaChat AI'}
                 </h2>
-                <p className={isDark ? 'text-[#4a9e80]' : 'text-emerald-600/70'}>
+                <p className={`${isDark ? 'text-[#4a9e80]' : 'text-emerald-600/70'} drop-shadow-md`}>
                   {user ? 'Awaiting your command...' : 'Start chatting or sign in to save your conversations'}
                 </p>
                 {!user && (
@@ -582,9 +586,9 @@ function App() {
                     onClick={() => setIsAuthModalOpen(true)}
                     className={`mt-6 px-6 py-2 rounded-lg font-medium ${
                       isDark
-                        ? 'bg-[#00ff95] hover:bg-[#00ff95]/90 text-black'
-                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                    } transition-colors`}
+                        ? 'bg-[#00ff95] hover:bg-[#00ff95]/90 text-black shadow-lg shadow-[#00ff95]/20'
+                        : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20'
+                    } transition-all duration-300 transform hover:scale-105`}
                   >
                     Sign In
                   </button>

@@ -40,8 +40,8 @@ export function ChatInput({ onSend, disabled, showAuthPrompt, onAuthClick, onOpt
   return (
     <div className={`border-t p-3 md:p-4 ${
       isDark
-        ? 'border-[#00ff9520] bg-[#0a0c10]'
-        : 'border-emerald-100 bg-white'
+        ? 'border-[#00ff9520] bg-[#0a0c10]/80 backdrop-blur-sm'
+        : 'border-emerald-100 bg-white/80 backdrop-blur-sm'
     } md:relative`}>
       <div className="max-w-3xl mx-auto relative">
         {showAuthPrompt && (
