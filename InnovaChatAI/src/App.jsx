@@ -3,7 +3,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { ChatHistory as ChatHistoryComponent } from './components/ChatHistory';
-import { BrainCircuit, Terminal, Shield, Sun, Moon, Menu, LogIn, User } from 'lucide-react';
+import AIToolsPanel from './components/AIToolsPanel';
+import PromptOptimizer from './components/PromptOptimizer';
+import { BrainCircuit, Terminal, Shield, Sun, Moon, Menu, LogIn, User, Sparkles, Wand2 } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal';
@@ -32,6 +34,9 @@ function App() {
   const [chatHistories, setChatHistories] = useState([]);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [isToolsPanelOpen, setIsToolsPanelOpen] = useState(false);
+  const [isPromptOptimizerOpen, setIsPromptOptimizerOpen] = useState(false);
+  const [promptToOptimize, setPromptToOptimize] = useState('');
 
   const [chatState, setChatState] = useState({
     messages: [],
@@ -248,6 +253,46 @@ function App() {
     }
   };
 
+  const handleToolSelect = async (tool) => {
+    switch (tool.action) {
+      case 'optimize-prompt':
+        setIsPromptOptimizerOpen(true);
+        break;
+      case 'generate-image':
+        await handleSendMessage('Generate a beautiful, high-quality image based on my request. Please create something visually appealing and artistic.');
+        break;
+      case 'code-help':
+        await handleSendMessage('I need help with coding. Please assist me with programming questions, code review, debugging, or explaining programming concepts.');
+        break;
+      case 'summarize-text':
+        await handleSendMessage('Please help me summarize long texts or documents. I can provide content that needs to be condensed into key points.');
+        break;
+      case 'research-help':
+        await handleSendMessage('I need assistance with research, fact-checking, and analysis. Please help me gather information and provide insights.');
+        break;
+      case 'content-writing':
+        await handleSendMessage('Help me create engaging content for blogs, social media, marketing materials, or other written content needs.');
+        break;
+      case 'resume-help':
+        await handleSendMessage('Assist me with creating a professional resume, cover letter, or career-related documents.');
+        break;
+      case 'email-help':
+        await handleSendMessage('Help me compose professional emails, responses, or other business communications.');
+        break;
+      default:
+        console.log('Tool not implemented yet:', tool);
+    }
+  };
+
+  const handleOptimizePrompt = (prompt) => {
+    setPromptToOptimize(prompt);
+    setIsPromptOptimizerOpen(true);
+  };
+
+  const handleOptimizedPrompt = (optimizedPrompt) => {
+    handleSendMessage(optimizedPrompt);
+  };
+
   const handleClearHistory = async () => {
     if (!window.confirm('Are you sure you want to clear all chat history?')) return;
 
@@ -348,6 +393,7 @@ function App() {
           isDark ? 'text-[#00ff95]' : 'text-emerald-600'
         }`}>InnovaChat AI</span>
         <div className="ml-auto flex items-center gap-2">
+   
           {user ? (
             <div className="relative">
               <button
@@ -435,6 +481,7 @@ function App() {
             isDark ? 'text-[#00ff95]' : 'text-emerald-600'
           }`}>InnovaChat AI</span>
           <div className="ml-auto flex items-center gap-2">
+     
             {user ? (
               <div className="relative">
                 <button
@@ -563,12 +610,29 @@ function App() {
             disabled={chatState.isLoading}
             showAuthPrompt={!user && chatState.messages.length > 0}
             onAuthClick={() => setIsAuthModalOpen(true)}
+            onOptimizePrompt={handleOptimizePrompt}
+            onOpenAITools={() => setIsToolsPanelOpen(true)}
           />
         </div>
       </div>
 
       {/* Auth Modal */}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
+      {/* AI Tools Panel */}
+      <AIToolsPanel 
+        isOpen={isToolsPanelOpen} 
+        onClose={() => setIsToolsPanelOpen(false)}
+        onToolSelect={handleToolSelect}
+      />
+
+      {/* Prompt Optimizer */}
+      <PromptOptimizer 
+        isOpen={isPromptOptimizerOpen} 
+        onClose={() => setIsPromptOptimizerOpen(false)}
+        onOptimizedPrompt={handleOptimizedPrompt}
+        initialPrompt={promptToOptimize}
+      />
     </div>
   );
 }

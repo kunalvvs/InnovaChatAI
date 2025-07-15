@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Terminal, LogIn } from 'lucide-react';
+import { Send, Terminal, LogIn, Wand2, Sparkles } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
-export function ChatInput({ onSend, disabled, showAuthPrompt, onAuthClick }) {
+export function ChatInput({ onSend, disabled, showAuthPrompt, onAuthClick, onOptimizePrompt, onOpenAITools }) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [input, setInput] = useState('');
@@ -63,9 +63,6 @@ export function ChatInput({ onSend, disabled, showAuthPrompt, onAuthClick }) {
           </div>
         )}
         <div className="relative">
-          <Terminal className={`absolute left-3 md:left-4 top-4 w-4 md:w-5 h-4 md:h-5 ${
-            isDark ? 'text-[#00ff95]' : 'text-emerald-600'
-          }`} />
           <textarea
             ref={textareaRef}
             value={input}
@@ -73,24 +70,68 @@ export function ChatInput({ onSend, disabled, showAuthPrompt, onAuthClick }) {
             onKeyDown={handleKeyDown}
             placeholder="Enter your command..."
             disabled={disabled}
-            className={`w-full resize-none rounded-lg p-3 md:p-4 pl-10 md:pl-12 pr-10 md:pr-12 text-sm md:text-base ${
+            className={`w-full resize-none rounded-lg p-3 md:p-4 pl-4 md:pl-6 pr-32 md:pr-36 text-sm md:text-base ${
               isDark
                 ? 'bg-[#0f1318] border-[#00ff9540] text-[#00ff95] placeholder-[#00ff9580]'
                 : 'bg-white border-emerald-200 text-gray-800 placeholder-emerald-600/50'
             } border focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 disabled:opacity-50 font-mono`}
             style={{ minHeight: '56px', maxHeight: '200px' }}
           />
-          <button
-            onClick={handleSend}
-            disabled={disabled || !input.trim()}
-            className={`absolute right-2 md:right-3 bottom-2 md:bottom-3 rounded-lg p-2 ${
-              isDark
-                ? 'text-[#00ff95] hover:text-white'
-                : 'text-emerald-600 hover:text-emerald-700'
-            } disabled:opacity-50 disabled:hover:text-[#00ff95] transition-colors duration-200`}
+          <div className="absolute right-2 md:right-3 bottom-2 md:bottom-3 flex gap-1">
+            <button
+              onClick={onOpenAITools}
+              className={`rounded-lg p-2 ${
+                isDark
+                  ? 'text-[#00ff95] hover:text-white hover:bg-[#00ff9520]'
+                  : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50'
+              } transition-colors duration-200`}
+              title="Open AI Tools"
+            >
+              <Sparkles className="w-4 md:w-5 h-4 md:h-5" />
+            </button>
+            {input.trim() && onOptimizePrompt && (
+              <button
+                onClick={() => onOptimizePrompt(input)}
+                disabled={disabled}
+                className={`rounded-lg p-2 ${
+                  isDark
+                    ? 'text-[#00ff95] hover:text-white hover:bg-[#00ff9520]'
+                    : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50'
+                } disabled:opacity-50 transition-colors duration-200`}
+                title="Optimize this prompt"
+              >
+                <Wand2 className="w-4 md:w-5 h-4 md:h-5" />
+              </button>
+            )}
+            <button
+              onClick={handleSend}
+              disabled={disabled || !input.trim()}
+              className={`rounded-lg p-2 ${
+                isDark
+                  ? 'text-[#00ff95] hover:text-white'
+                  : 'text-emerald-600 hover:text-emerald-700'
+              } disabled:opacity-50 disabled:hover:text-[#00ff95] transition-colors duration-200`}
+            >
+              <Send className="w-4 md:w-5 h-4 md:h-5" />
+            </button>
+          </div>
+        </div>
+        
+        {/* Copyright */}
+        <div className={`text-center mt-2 text-xs ${
+          isDark ? 'text-gray-500' : 'text-gray-400'
+        }`}>
+          © 2025 Developed By{' '}
+          <a 
+            href="https://kunalvvs.vercel.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`${
+              isDark ? 'text-[#00ff95] hover:text-[#00ff95]/80' : 'text-emerald-600 hover:text-emerald-700'
+            } transition-colors duration-200`}
           >
-            <Send className="w-4 md:w-5 h-4 md:h-5" />
-          </button>
+            Kunal
+          </a>
         </div>
       </div>
     </div>
