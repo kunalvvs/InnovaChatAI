@@ -13,9 +13,16 @@ import { supabase } from './lib/supabase';
 
 // Initialize the Google Generative AI with your API key
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!API_KEY) {
+  console.error('VITE_GEMINI_API_KEY is not set in environment variables');
+}
+
+console.log('API Key loaded:', API_KEY ? 'Yes' : 'No');
+
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ 
-  model: 'gemini-1.5-flash',
+  model: 'gemini-2.0-flash',
   generationConfig: {
     temperature: 0.7,
     topK: 40,
@@ -173,6 +180,16 @@ function App() {
   const handleSendMessage = async (content) => {
     if (!content.trim()) return;
 
+    console.log('handleSendMessage called with:', content);
+
+    if (!API_KEY) {
+      setChatState(prev => ({
+        ...prev,
+        error: 'Gemini API key is not configured. Please add VITE_GEMINI_API_KEY to your environment variables.',
+      }));
+      return;
+    }
+
     const userMessage = { role: 'user', content: content.trim(), type: 'text' };
     
     // Immediately update the UI with user message
@@ -203,9 +220,12 @@ function App() {
         };
       } else {
         try {
+          console.log('Sending request to Gemini AI...', content);
           const result = await model.generateContent(content);
           const response = await result.response;
           const text = response.text();
+
+          console.log('Received response from Gemini AI:', text);
 
           if (!text) {
             throw new Error('Empty response from AI');
@@ -217,11 +237,11 @@ function App() {
             type: 'text'
           };
         } catch (aiError) {
-          console.error('AI Error:', aiError);
+          console.error('AI Error details:', aiError);
           
           assistantMessage = {
             role: 'assistant',
-            content: "I apologize, but I'm having trouble generating a response right now. Could you try rephrasing your question?",
+            content: `I apologize, but I'm having trouble generating a response right now. Error: ${aiError.message || 'Unknown error'}. Please check your API key and try again.`,
             type: 'text'
           };
         }

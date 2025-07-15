@@ -19,6 +19,7 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showCategories, setShowCategories] = useState(false);
 
   const toolCategories = [
     { id: 'all', name: 'All Tools', icon: Sparkles },
@@ -120,19 +121,19 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className={`w-full max-w-4xl h-[90vh] rounded-xl shadow-2xl ${
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
+      <div className={`w-full max-w-6xl h-[95vh] sm:h-[90vh] rounded-lg sm:rounded-xl shadow-2xl ${
         isDark ? 'bg-[#0f1318] border border-[#00ff9540]' : 'bg-white border border-emerald-100'
       } flex flex-col overflow-hidden`}>
         
         {/* Header */}
-        <div className={`p-6 border-b ${
+        <div className={`p-3 sm:p-6 border-b ${
           isDark ? 'border-[#00ff9520]' : 'border-emerald-100'
         }`}>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Sparkles className={`w-6 h-6 ${isDark ? 'text-[#00ff95]' : 'text-emerald-600'}`} />
-              <h2 className={`text-xl font-semibold ${
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Sparkles className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-[#00ff95]' : 'text-emerald-600'}`} />
+              <h2 className={`text-lg sm:text-xl font-semibold ${
                 isDark ? 'text-[#00ff95]' : 'text-emerald-600'
               }`}>
                 AI Tools Galaxy
@@ -149,14 +150,64 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
               ✕
             </button>
           </div>
-          <p className={`mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`mt-2 text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Discover and use AI tools to enhance your workflow and productivity
           </p>
+          
+          {/* Mobile Category Selector */}
+          <div className="md:hidden mt-4">
+            <button
+              onClick={() => setShowCategories(!showCategories)}
+              className={`w-full flex items-center justify-between p-3 rounded-lg border ${
+                isDark
+                  ? 'bg-[#0a0c10] border-[#00ff9520] text-[#00ff95]'
+                  : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+              }`}
+            >
+              <span className="text-sm font-medium">
+                {toolCategories.find(cat => cat.id === selectedCategory)?.name}
+              </span>
+              <ChevronRight className={`w-4 h-4 transition-transform ${showCategories ? 'rotate-90' : ''}`} />
+            </button>
+            
+            {showCategories && (
+              <div className={`mt-2 p-2 rounded-lg border ${
+                isDark ? 'bg-[#0a0c10] border-[#00ff9520]' : 'bg-emerald-50 border-emerald-200'
+              }`}>
+                <div className="grid grid-cols-2 gap-1">
+                  {toolCategories.map((category) => {
+                    const IconComponent = category.icon;
+                    return (
+                      <button
+                        key={category.id}
+                        onClick={() => {
+                          setSelectedCategory(category.id);
+                          setShowCategories(false);
+                        }}
+                        className={`flex items-center gap-2 p-2 rounded-lg text-left transition-colors ${
+                          selectedCategory === category.id
+                            ? isDark
+                              ? 'bg-[#00ff9520] text-[#00ff95]'
+                              : 'bg-emerald-100 text-emerald-700'
+                            : isDark
+                            ? 'text-gray-400 hover:bg-[#00ff9510] hover:text-[#00ff95]'
+                            : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-700'
+                        }`}
+                      >
+                        <IconComponent className="w-3 h-3" />
+                        <span className="text-xs">{category.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-1 overflow-hidden">
-          {/* Categories Sidebar */}
-          <div className={`w-64 border-r ${
+          {/* Desktop Categories Sidebar */}
+          <div className={`hidden md:block w-56 lg:w-64 border-r ${
             isDark ? 'border-[#00ff9520] bg-[#0a0c10]' : 'border-emerald-100 bg-emerald-50'
           } p-4 overflow-y-auto`}>
             <h3 className={`text-sm font-medium mb-3 ${
@@ -190,29 +241,29 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
           </div>
 
           {/* Tools Grid */}
-          <div className="flex-1 p-6 overflow-y-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex-1 p-3 sm:p-6 overflow-y-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {filteredTools.map((tool) => (
                 <div
                   key={tool.id}
-                  className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-lg ${
+                  className={`p-3 sm:p-4 rounded-lg border cursor-pointer transition-all hover:shadow-lg ${
                     isDark
                       ? 'bg-[#0a0c10] border-[#00ff9520] hover:border-[#00ff95] hover:bg-[#0f1318]'
                       : 'bg-white border-emerald-100 hover:border-emerald-300 hover:shadow-emerald-50'
                   }`}
                   onClick={() => handleToolClick(tool)}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="text-2xl">{tool.icon}</div>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="text-xl sm:text-2xl">{tool.icon}</div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className={`font-medium ${
+                        <h4 className={`font-medium text-sm sm:text-base ${
                           isDark ? 'text-[#00ff95]' : 'text-emerald-700'
                         }`}>
                           {tool.name}
                         </h4>
                         {tool.integrated && (
-                          <span className={`px-2 py-1 text-xs rounded-full ${
+                          <span className={`px-1 sm:px-2 py-0.5 sm:py-1 text-xs rounded-full ${
                             isDark
                               ? 'bg-[#00ff9520] text-[#00ff95]'
                               : 'bg-emerald-100 text-emerald-700'
@@ -221,20 +272,20 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
                           </span>
                         )}
                       </div>
-                      <p className={`text-sm ${
+                      <p className={`text-xs sm:text-sm ${
                         isDark ? 'text-gray-400' : 'text-gray-600'
                       }`}>
                         {tool.description}
                       </p>
-                      <div className="flex items-center justify-between mt-3">
-                        <span className={`text-xs px-2 py-1 rounded-full ${
+                      <div className="flex items-center justify-between mt-2 sm:mt-3">
+                        <span className={`text-xs px-1 sm:px-2 py-0.5 sm:py-1 rounded-full ${
                           isDark
                             ? 'bg-[#00ff9510] text-[#00ff95]'
                             : 'bg-emerald-50 text-emerald-600'
                         }`}>
                           {toolCategories.find(cat => cat.id === tool.category)?.name}
                         </span>
-                        <ChevronRight className={`w-4 h-4 ${
+                        <ChevronRight className={`w-3 h-3 sm:w-4 sm:h-4 ${
                           isDark ? 'text-gray-500' : 'text-gray-400'
                         }`} />
                       </div>
@@ -245,36 +296,36 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
             </div>
 
             {/* External Links */}
-            <div className="mt-8 pt-6 border-t border-opacity-20 border-current">
-              <h4 className={`text-lg font-medium mb-4 ${
+            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-opacity-20 border-current">
+              <h4 className={`text-base sm:text-lg font-medium mb-3 sm:mb-4 ${
                 isDark ? 'text-[#00ff95]' : 'text-emerald-700'
               }`}>
                 Explore More Tools
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <a
                   href="https://aitoolsgalaxy.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-lg ${
+                  className={`flex items-center justify-between p-3 sm:p-4 rounded-lg border transition-all hover:shadow-lg ${
                     isDark
                       ? 'bg-[#0a0c10] border-[#00ff9520] hover:border-[#00ff95]'
                       : 'bg-white border-emerald-100 hover:border-emerald-300'
                   }`}
                 >
                   <div>
-                    <h5 className={`font-medium ${
+                    <h5 className={`font-medium text-sm sm:text-base ${
                       isDark ? 'text-[#00ff95]' : 'text-emerald-700'
                     }`}>
                       AI Tools Galaxy
                     </h5>
-                    <p className={`text-sm ${
+                    <p className={`text-xs sm:text-sm ${
                       isDark ? 'text-gray-400' : 'text-gray-600'
                     }`}>
                       Discover more AI tools
                     </p>
                   </div>
-                  <ExternalLink className={`w-5 h-5 ${
+                  <ExternalLink className={`w-4 h-4 sm:w-5 sm:h-5 ${
                     isDark ? 'text-gray-500' : 'text-gray-400'
                   }`} />
                 </a>
@@ -283,25 +334,25 @@ const AIToolsPanel = ({ isOpen, onClose, onToolSelect }) => {
                   href="https://promptelevate.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-lg ${
+                  className={`flex items-center justify-between p-3 sm:p-4 rounded-lg border transition-all hover:shadow-lg ${
                     isDark
                       ? 'bg-[#0a0c10] border-[#00ff9520] hover:border-[#00ff95]'
                       : 'bg-white border-emerald-100 hover:border-emerald-300'
                   }`}
                 >
                   <div>
-                    <h5 className={`font-medium ${
+                    <h5 className={`font-medium text-sm sm:text-base ${
                       isDark ? 'text-[#00ff95]' : 'text-emerald-700'
                     }`}>
                       Prompt Elevate
                     </h5>
-                    <p className={`text-sm ${
+                    <p className={`text-xs sm:text-sm ${
                       isDark ? 'text-gray-400' : 'text-gray-600'
                     }`}>
                       AI-powered prompt optimizer
                     </p>
                   </div>
-                  <ExternalLink className={`w-5 h-5 ${
+                  <ExternalLink className={`w-4 h-4 sm:w-5 sm:h-5 ${
                     isDark ? 'text-gray-500' : 'text-gray-400'
                   }`} />
                 </a>

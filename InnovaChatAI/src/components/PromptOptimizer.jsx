@@ -84,19 +84,19 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className={`w-full max-w-4xl h-[90vh] rounded-xl shadow-2xl ${
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
+      <div className={`w-full max-w-5xl h-[95vh] sm:h-[90vh] rounded-lg sm:rounded-xl shadow-2xl ${
         isDark ? 'bg-[#0f1318] border border-[#00ff9540]' : 'bg-white border border-emerald-100'
       } flex flex-col overflow-hidden`}>
         
         {/* Header */}
-        <div className={`p-6 border-b ${
+        <div className={`p-3 sm:p-6 border-b ${
           isDark ? 'border-[#00ff9520]' : 'border-emerald-100'
         }`}>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Wand2 className={`w-6 h-6 ${isDark ? 'text-[#00ff95]' : 'text-emerald-600'}`} />
-              <h2 className={`text-xl font-semibold ${
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Wand2 className={`w-5 h-5 sm:w-6 sm:h-6 ${isDark ? 'text-[#00ff95]' : 'text-emerald-600'}`} />
+              <h2 className={`text-lg sm:text-xl font-semibold ${
                 isDark ? 'text-[#00ff95]' : 'text-emerald-600'
               }`}>
                 Prompt Optimizer
@@ -113,16 +113,16 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
               ✕
             </button>
           </div>
-          <p className={`mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`mt-2 text-sm sm:text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Improve your prompts with AI-powered analysis and suggestions
           </p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 h-full">
             
             {/* Input Section */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   isDark ? 'text-[#00ff95]' : 'text-emerald-700'
@@ -133,7 +133,7 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Enter your prompt here for analysis and optimization..."
-                  className={`w-full h-40 p-4 rounded-lg border resize-none ${
+                  className={`w-full h-32 sm:h-40 p-3 sm:p-4 rounded-lg border resize-none text-sm sm:text-base ${
                     isDark
                       ? 'bg-[#0a0c10] border-[#00ff9520] text-gray-200 placeholder-gray-500 focus:border-[#00ff95]'
                       : 'bg-white border-emerald-200 text-gray-900 placeholder-gray-400 focus:border-emerald-500'
@@ -151,7 +151,7 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
               <button
                 onClick={analyzePrompt}
                 disabled={!prompt.trim() || isAnalyzing}
-                className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                className={`w-full py-2 sm:py-3 px-4 rounded-lg font-medium transition-colors text-sm sm:text-base ${
                   isDark
                     ? 'bg-[#00ff95] hover:bg-[#00ff95]/90 text-black disabled:bg-gray-700 disabled:text-gray-500'
                     : 'bg-emerald-600 hover:bg-emerald-700 text-white disabled:bg-gray-300 disabled:text-gray-500'
@@ -169,20 +169,20 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
             </div>
 
             {/* Analysis Results */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {analysis ? (
                 <>
                   {/* Score */}
-                  <div className={`p-4 rounded-lg ${
+                  <div className={`p-3 sm:p-4 rounded-lg ${
                     isDark ? 'bg-[#0a0c10]' : 'bg-emerald-50'
                   }`}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className={`font-medium ${
+                      <span className={`font-medium text-sm sm:text-base ${
                         isDark ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         Prompt Score
                       </span>
-                      <span className={`text-2xl font-bold ${getScoreColor(analysis.score)}`}>
+                      <span className={`text-xl sm:text-2xl font-bold ${getScoreColor(analysis.score)}`}>
                         {analysis.score}/100
                       </span>
                     </div>
@@ -202,15 +202,15 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
 
                   {/* Strengths */}
                   <div>
-                    <h4 className={`font-medium mb-2 flex items-center gap-2 ${
+                    <h4 className={`font-medium mb-2 flex items-center gap-2 text-sm sm:text-base ${
                       isDark ? 'text-green-400' : 'text-green-600'
                     }`}>
-                      <CheckCircle className="w-4 h-4" />
+                      <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       Strengths
                     </h4>
                     <ul className="space-y-1">
                       {analysis.strengths.map((strength, index) => (
-                        <li key={index} className={`text-sm ${
+                        <li key={index} className={`text-xs sm:text-sm ${
                           isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
                           • {strength}
@@ -221,15 +221,15 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
 
                   {/* Suggestions */}
                   <div>
-                    <h4 className={`font-medium mb-2 flex items-center gap-2 ${
+                    <h4 className={`font-medium mb-2 flex items-center gap-2 text-sm sm:text-base ${
                       isDark ? 'text-yellow-400' : 'text-yellow-600'
                     }`}>
-                      <Lightbulb className="w-4 h-4" />
+                      <Lightbulb className="w-3 h-3 sm:w-4 sm:h-4" />
                       Suggestions
                     </h4>
                     <ul className="space-y-1">
                       {analysis.suggestions.map((suggestion, index) => (
-                        <li key={index} className={`text-sm ${
+                        <li key={index} className={`text-xs sm:text-sm ${
                           isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
                           • {suggestion}
@@ -240,25 +240,25 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
 
                   {/* Optimized Prompt */}
                   <div>
-                    <h4 className={`font-medium mb-2 flex items-center gap-2 ${
+                    <h4 className={`font-medium mb-2 flex items-center gap-2 text-sm sm:text-base ${
                       isDark ? 'text-[#00ff95]' : 'text-emerald-600'
                     }`}>
-                      <TrendingUp className="w-4 h-4" />
+                      <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
                       Optimized Prompt
                     </h4>
-                    <div className={`p-4 rounded-lg border ${
+                    <div className={`p-3 sm:p-4 rounded-lg border ${
                       isDark
                         ? 'bg-[#0a0c10] border-[#00ff9520]'
                         : 'bg-emerald-50 border-emerald-200'
                     }`}>
-                      <p className={`text-sm mb-3 ${
+                      <p className={`text-xs sm:text-sm mb-3 ${
                         isDark ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         {analysis.optimizedPrompt}
                       </p>
                       <button
                         onClick={useOptimizedPrompt}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        className={`px-3 sm:px-4 py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
                           isDark
                             ? 'bg-[#00ff95] hover:bg-[#00ff95]/90 text-black'
                             : 'bg-emerald-600 hover:bg-emerald-700 text-white'
@@ -270,11 +270,11 @@ const PromptOptimizer = ({ isOpen, onClose, onOptimizedPrompt, initialPrompt = '
                   </div>
                 </>
               ) : (
-                <div className={`flex flex-col items-center justify-center h-full text-center ${
+                <div className={`flex flex-col items-center justify-center h-full text-center p-4 ${
                   isDark ? 'text-gray-500' : 'text-gray-400'
                 }`}>
-                  <Wand2 className="w-12 h-12 mb-4 opacity-50" />
-                  <p>Enter a prompt and click "Analyze & Optimize" to get AI-powered suggestions</p>
+                  <Wand2 className="w-8 h-8 sm:w-12 sm:h-12 mb-4 opacity-50" />
+                  <p className="text-sm sm:text-base">Enter a prompt and click "Analyze & Optimize" to get AI-powered suggestions</p>
                 </div>
               )}
             </div>
